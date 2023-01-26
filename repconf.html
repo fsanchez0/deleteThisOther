@@ -1,0 +1,430 @@
+<html>
+<head>
+	<title>prueba</title>
+<script language="javascript" src="scripts/ajax.js" type="text/javascript"></script>
+<script languaje="javascript">
+var unimilipx = 28;
+var mover=false;
+var oid;
+var nodivs=0;
+var divs = new Array(20);
+
+//--------- Objeto para crear divs----------------
+
+//Metodo de actualizar
+function mActualizar()
+{
+	//alert("Actualizado");
+/*
+	this.oDiv.style.top=this.y;
+	this.oDiv.style.left=this.x;
+	this.oDiv.style.width=this.ancho;
+	this.oDiv.style.height =this.alto;
+*/
+	this.oDiv.style.top=convertirPxCM(this.y,false);
+	this.oDiv.style.left=convertirPxCM(this.x,false);
+	this.oDiv.style.width=convertirPxCM(this.ancho,false);
+	this.oDiv.style.height =convertirPxCM(this.alto,false);
+
+	this.oDiv.style.visibility ="visible";
+	this.oDiv.id=this.id;
+	this.oDiv.innerHTML ="<table width='100%' height='100%' border='1' onMousedown='mover=true;oid=this.parentNode.id' onMouseup='mover=false;oid=-1' ondblclick='muestracampos(this.parentNode.id)'><tr><td>" + this.contenido + "</td></tr></table>";
+	//alert("Actualizado");
+
+}
+
+
+
+//---constructor del objeto (clase) -----
+function classDiv(elid)
+{
+	//alert("construyo el objeto inicio");
+	this.x=10;
+	this.y=10;
+	this.alto=1;
+	this.ancho=1;
+	this.contenido="&nbsp;";
+	this.marco=1;
+	this.alineacion="J";
+	this.id=elid;
+	this.oDiv = document.createElement('div');
+	this.oDiv.style.position="absolute";
+	this.oDiv.style.zIndex="0";
+	this.actualizar = mActualizar;
+	//alert("construyo el objeto Por atualizar");
+	this.actualizar();
+	document.body.appendChild(this.oDiv);
+}
+//-----------------------------------------------------
+
+
+// Crea el objeto div en un arreglo
+function creardiv()
+{
+	if (nodivs>=0 && nodivs<=20)
+	{
+		divs[nodivs]= new classDiv(nodivs);
+		nodivs++;
+		return 	nodivs-1;
+	}
+	else
+	{
+		return -1;
+
+	}
+
+}
+
+//Borra un div del arreglo
+function eliminardiv(noid)
+{
+	divs[noid].oDiv.style.visibility="hidden";
+	if(noid==nodivs-1)
+	{
+		divs[nodivs-1] =""
+		nodivs--;
+	}
+	else
+	{
+		aux=noid - 0;
+		alert("elinicio debe de ser en: " + aux + " y deve de avanzar" +  ((nodivs - 1) - aux));
+		for(i=aux;i<nodivs-1;i++)
+		{
+		j=i+1;
+		//alert("inicio: " + i);
+		alert("contenido actual " + i + ": " + divs[i].contenido + "   para cambiar por" + j + ": " + divs[j].contenido);
+		//alert("inicio: " + j);
+		//alert("para cambiar por: " + divs[j].contenido);
+		divs[i].contenido = divs[i+1].contenido;
+		divs[i].x = divs[i+1].x;
+		divs[i].y =divs[i+1].y;
+		divs[i].ancho = divs[i+1].ancho;
+		divs[i].alto = divs[i+1].alto;
+		divs[i].marco = divs[i+1].marco;
+		divs[i].alineacion = divs[i+1].alineacion;
+		divs[i].oDiv = divs[i+1].oDiv;
+		//divs[i].id = divs[i+1].id;
+		divs[i].marco =divs[i+1].marco;
+
+		divs[i].actualizar();
+		//alert("iterminio: " + i);
+		}
+		divs[nodivs-1] =""
+		nodivs--;
+	}
+
+
+}
+
+
+// Mueve un elemnto del arreglo de divs
+function moverdiv(lx, ly, lid)
+{
+	divs[lid].x=convertirPxCM(lx,true);
+	divs[lid].y=convertirPxCM(ly,true);
+	divs[lid].actualizar();
+}
+
+
+//Muestra el div de propiedades de elementos y asigna valores a los
+//campos
+function muestracampos(lid)
+{
+	var eldiv1 = document.getElementById("prueba1");
+	eldiv1.style.top=convertirPxCM(divs[lid].y,false);
+	eldiv1.style.left=convertirPxCM(divs[lid].x,false);
+	eldiv1.style.visibility="visible";
+	eldiv1.style.zIndex=100;
+
+	var xdiv = document.getElementById("px");
+	xdiv.value=divs[lid].x;
+	var ydiv = document.getElementById("py");
+	ydiv.value=divs[lid].y;
+	var alturadiv = document.getElementById("alt");
+	alturadiv.value=divs[lid].alto;
+	var anchodiv = document.getElementById("anch");
+	anchodiv.value=divs[lid].ancho;
+	var contenidodiv = document.getElementById("conte");
+	contenidodiv.value=divs[lid].contenido;
+	var idndiv = document.getElementById("iddivn");
+	idndiv.value=divs[lid].id;
+	var idndiv = document.getElementById("marco");
+	idndiv.value=divs[lid].marco;
+	//alert(divs[lid].marco);
+	cambiaE(divs[lid].marco);
+	var idndiv = document.getElementById("alineacion");
+	//alert(divs[lid].alineacion);
+	idndiv.value=divs[lid].alineacion;
+
+
+};
+
+
+//altera los paremetros del elemento del arreglo del div
+function alterardiv(lx,ly,lan,lal,cont,lid,mar,alin)
+{
+
+	divs[lid].x=lx;
+	divs[lid].y=ly;
+	divs[lid].ancho=lan;
+	divs[lid].alto=lal;
+	divs[lid].contenido=cont;
+	divs[lid].marco=mar;
+	divs[lid].alineacion=alin;
+	divs[lid].actualizar();
+
+}
+
+//Convierte milimietros en pixeles
+function convertirPxCM(medida,mm)
+{
+	var operacion;
+	if(mm==true) //convierte pixeles a centimetros
+	{
+		//alert(medida);
+		//alert(medida * .1);
+		operacion = (medida * .1)/2.8;
+		//operacion = (medida )/28.285714285714285714285714285714;
+
+
+
+	}
+	else //convierte cm a pixeles
+	{
+
+		operacion = (medida * 2.8)/.1;
+		//operacion = (medida * 28.285714285714285714285714285714);
+
+	}
+	return operacion;
+
+};
+
+//Captura y mueve los elementos segun la posiciondel cursos en la pagina
+function coordinates(event)
+{
+	if(mover==true)
+	{
+		var eldiv1 = document.getElementById("prueba1");
+		x=event.clientX;
+		y=event.clientY;
+
+		//alert("X=" + x + " Y=" + y)
+
+		//eldiv1.style.top=y;
+		//eldiv1.style.left=x;
+		//alert("X=" + eldiv1.left + " Y=" + eldiv1.top)
+		if (oid>=0)
+		{
+			moverdiv(x-10, y-10, oid);
+		}
+	}
+
+}
+
+//Crea uan ventana nueva con los parametros de lso campos seleccionados para verlos en una ventan nueva
+//function nuevaV(c1,d1,c2,d2,c3,d3,c4,d4,c5,d5,c6,d6)
+function nuevaV()
+{
+
+	var texto;
+	var texto2="";
+
+	for(i=0;i<nodivs;i++)
+	{
+
+		texto2=texto2 + i + "=" + divs[i].contenido + "|" + divs[i].x + "|" + divs[i].y + "|" + divs[i].ancho + "|" + divs[i].alto + "|" + divs[i].marco + "|" + divs[i].alineacion + "&";
+
+	}
+	window.open('scripts/reporte.php?'+texto2,'reporte','directories=yes,menubar=yes,location=yes');
+}
+
+//Cambia etiquetas del div de propiedades de elementos nuevos
+function cambiaE(etk)
+{
+	if(etk=="0")
+	{
+		document.getElementById("tdalto").innerHTML="Margen Izq.";
+		document.getElementById("tdancho").innerHTML="Margen Der.";
+
+	}
+	else
+	{
+		document.getElementById("tdalto").innerHTML="Alto";
+		document.getElementById("tdancho").innerHTML="Ancho";
+	}
+
+
+
+};
+
+
+function parametrosdatoscampos(acc,idr,idrg,nomb,consul,filt)
+{
+//nombre!consulta!idrgrupo!campos(a#b#c#..|n)  a=d1|d2|d3|..|dn
+	var texto2;
+	texto2="";
+	if(idr!=0)
+	{
+		texto2="id=" + idr + "&";
+
+	}
+	texto2= texto2 + "accion=" + acc + "&info=";
+	texto2=texto2 +nomb + "!" + consul + "!" + idrg + "!" + filt + "!";
+	alert(nodivs);
+	for(i=0;i<nodivs;i++)
+	{
+
+		texto2=texto2 +  divs[i].contenido + "|" + divs[i].x + "|" + divs[i].y + "|" + divs[i].ancho + "|" + divs[i].alto + "|" + divs[i].marco + "|" + divs[i].alineacion + "~";
+
+	}
+	alert(texto2);
+	return texto2;
+}
+
+
+
+function cargarSeccion(root,loc, param){
+var cont;
+cont = document.getElementById(loc);
+ajax=nuevoAjax();
+alert(root + "?"+param);
+ajax.open("GET", root + "?"+param ,true);
+ajax.onreadystatechange=function() {
+if (ajax.readyState==4) {
+   cont.innerHTML = ajax.responseText
+}
+}
+ajax.send(null)
+}
+
+
+
+//function cargacampoed(lx,ly,lan,lal,cont,lid,mar,alin)
+function cargacampoed(lista)
+{
+	nodivs=0;
+	lista=lista.substring(0,lista.length-1)
+	listad = lista.split("~");
+	alert("inicio con: " + nodivs + " divs");
+	for(l1 in listad)
+	{
+		newd=listad[l1].split("|");
+
+		lid=newd[5]-0;
+		alert(lid+1);
+		divs[lid]= new classDiv(lid);
+		divs[lid].x=newd[0];
+		divs[lid].y=newd[1];
+		divs[lid].ancho=newd[2];
+		divs[lid].alto=newd[3];
+		divs[lid].contenido=newd[4];
+		divs[lid].marco=newd[6];
+		divs[lid].alineacion=newd[7];
+		divs[lid].actualizar();
+		nodivs=(lid-0)+1;
+	}
+	alert("termino con: " + nodivs + " divs");
+
+}
+
+/*
+function nuevaVP(elidr)
+{
+
+
+	var texto2="id=" + elidr + "&filtro=idrgrupo=2";
+*/
+function nuevaVP(elid,cate)
+{
+	A= prompt("introdusca Id de historia","");
+	B= prompt("introdusca categoria (1=fiscal, 2=nofiscal, 3=interes","");
+
+	var texto2="id=" + A + "&filtro=" + B;
+
+	window.open('scripts/reporte2.php?'+texto2,'reporte','directories=yes,menubar=yes,location=yes');
+}
+
+
+
+</script>
+</head>
+<body onmousemove="coordinates(event)">
+
+<input type="button" value="Probar PDF" onClick="nuevaV();"> &nbsp;&nbsp;
+<input type="button" value="Crear Campo" onClick="creardiv()">
+<input type ="button" value ="Mostrar Lista" onClick="if(this.value=='Mostrar Lista'){cargarSeccion('scripts/listarep.php','listarecibos', 'accion=0');this.value='Oultar Lista';document.getElementById('listarecibos').style.zIndex='100';}else{document.getElementById('listarecibos').innerHTML='';this.value='Mostrar Lista'}">
+
+<div id="listarecibos" STYLE="position: absolute; top:50px; left:10px; z-index=101;background-color:#0000FF;">
+
+
+</div>
+<DIV STYLE="position: absolute; top:300px; left:200px; width:300px; height:60; z-index=100;visibility:hidden;background-color:#0000FF;filter:alpha(opacity=60);opacity:0.6;-moz-opacity:0.6;" id="prueba1" onMousedown="mover=true;" onmouseup="mover=false;">
+<!--filter:alpha(opacity=60);opacity:0.6;-moz-opacity:0.6;-->
+
+	<table border="1" bgcolor="#0000FF">
+	<tr><td>
+	<form>
+		<table border="1">
+		<tr>
+		<td>posición X</td>
+		<td>
+			<input type="text" name="posX" onChange="alterardiv(posX.value,posY.value,ancho.value,alto.value,contenido.value,iddivn.value);this.parentNode.parentNode.parentNode.parentNode.parentNode.style.zIndex=100;" id="px">cm
+		</td>
+		</tr>
+		<tr>
+		<td>posición Y</td>
+		<td>
+			<input type="text" name="posY" onChange="alterardiv(posX.value,posY.value,ancho.value,alto.value,contenido.value,iddivn.value);this.parentNode.parentNode.parentNode.parentNode.parentNode.style.zIndex=100;" id="py">cm
+		</td>
+		</tr>
+		<tr>
+		<td id="tdalto">Alto</td>
+		<td>
+			<input type="text" name="alto" onChange="alterardiv(posX.value,posY.value,ancho.value,alto.value,contenido.value,iddivn.value);this.parentNode.parentNode.parentNode.parentNode.parentNode.style.zIndex=100;" id="alt">cm
+		</td>
+		</tr>
+		<tr>
+		<td id="tdancho">Ancho</td>
+		<td>
+			<input type="text" name="ancho" onChange="alterardiv(posX.value,posY.value,ancho.value,alto.value,contenido.value,iddivn.value);this.parentNode.parentNode.parentNode.parentNode.parentNode.style.zIndex=100;" id="anch">cm
+		</td>
+		</tr>
+		<tr>
+		<td>Inserción texto</td>
+		<td>
+			<select name="marco" id="marco" onChange="cambiaE(this.value);">
+			<option value="0">Texto corrido</option>
+			<option value="1" selected>En marco</option>
+			</select>
+
+		</td>
+		</tr>
+		<tr>
+		<td>Alineacion</td>
+		<td>
+			<select name="alineacion" id="alineacion" >
+			<option value="I">Izquierda</option>
+			<option value="R">Derecha</option>
+			<option value="J" selected>Justificado</option>
+			<option value="C">Centrado</option>
+			</select>
+		</td>
+		</tr>
+		<tr>
+		<td colspan="2">
+
+		contenido<textarea name="contenido" id="conte" rows="5" cols="30" onChange="alterardiv(posX.value,posY.value,ancho.value,alto.value,contenido.value,iddivn.value);this.parentNode.parentNode.parentNode.parentNode.parentNode.style.zIndex=100;"></textarea>
+		</td>
+		</tr>
+		</table>
+		<input type="hidden" name="iddivn" value="-1" id="iddivn">
+		<input type="button" value="Cerrar" onClick="this.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.style.visibility='hidden';alterardiv(posX.value,posY.value,ancho.value,alto.value,contenido.value,iddivn.value,marco.value,alineacion.value); iddivn.value='-1'">
+		<input type ="button" value = "Eliminar" onClick="this.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.style.visibility='hidden';eliminardiv(iddivn.value);">
+	</form>
+	</td>
+	</tr>
+	</table>
+</DIV>
+</body>
+</html>

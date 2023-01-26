@@ -1,0 +1,430 @@
+<html>
+<head>
+	<title>Padilla & Bujalil S.C.</title>
+
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="stylesheet" type="text/css" href="estilos/estilos.css">
+<script type=text/javascript src="scripts/mijs.js"></script>
+<script language="javascript" src="scripts/ajax.js" type="text/javascript"></script>
+<script src="scripts/nicEdit.js" type="text/javascript"></script>
+<script language="javascript" type="text/javascript">
+//cargarCalendario(0); mes=0;cargarMenu('','');
+var mes;
+
+
+
+function cargarSeccion(root,loc, param)
+{
+	var cont;
+	cont = document.getElementById(loc);
+	ajax=nuevoAjax();
+	ajax.open("GET", root + "?"+param ,true);
+	ajax.onreadystatechange=function() {
+		if (ajax.readyState==4) {
+  			cont.innerHTML = ajax.responseText
+		}
+	}
+	ajax.send(null)
+}
+
+function cargarSeccion_new(root,loc, param)
+{
+	var cont;
+	cont = document.getElementById(loc);
+	ajax=nuevoAjax();
+	ajax.open("POST", root + "?"+param ,true);
+	ajax.onreadystatechange=function() {
+		if (ajax.readyState==4) {
+  			cont.innerHTML = ajax.responseText
+		}
+	}
+	ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+	ajax.send(param)
+}
+
+
+function cargarCalendario(root,loc, param)
+{
+	var cont;
+	contcal = document.getElementById(loc);
+	ajaxcal=nuevoAjax();
+	ajaxcal.open("GET", root + "?"+param ,true);
+	ajaxcal.onreadystatechange=function() {
+		if (ajaxcal.readyState==4) {
+  			contcal.innerHTML = ajaxcal.responseText
+		}
+	}
+	ajaxcal.send(null)
+}
+
+function cargarBusqueda(root,loc, param)
+{
+	var cont;
+	contbus = document.getElementById(loc);
+	ajaxbus=nuevoAjax();
+	ajaxbus.open("GET", root + "?"+param ,true);
+	ajaxbus.onreadystatechange=function() {
+		if (ajaxbus.readyState==4) {
+  			contbus.innerHTML = ajaxbus.responseText
+		}
+	}
+	ajaxbus.send(null)
+}
+
+function cargarVencimienetos(root,loc, param)
+{
+	var cont;
+	contVen = document.getElementById(loc);
+	ajaxVen=nuevoAjax();
+	ajaxVen.open("GET", root + "?"+param ,true);
+	ajaxVen.onreadystatechange=function() {
+		if (ajaxVen.readyState==4) {
+  			contVen.innerHTML = ajaxVen.responseText
+		}
+	}
+	ajaxVen.send(null)
+}
+
+
+function cargaTareas(root,loc, param)
+{
+	var cont;
+	contTar = document.getElementById(loc);
+	ajaxTar=nuevoAjax();
+	ajaxTar.open("GET", root + "?"+param ,true);
+	ajaxTar.onreadystatechange=function() {
+		if (ajaxTar.readyState==4) {
+  			contTar.innerHTML = ajaxTar.responseText
+		}
+	}
+	ajaxTar.send(null)
+}
+
+function cargaimagen(root,loc, param)
+{
+	var contimg;
+	contimg = document.getElementById(loc);
+	ajaximg=nuevoAjax();
+	ajaximg.open("GET", root + "?"+param ,true);
+	ajaximg.onreadystatechange=function() {
+		if (ajaximg.readyState==4) {
+  			contimg.innerHTML = ajaximg.responseText
+		}
+	}
+	ajaximg.send(null)
+}
+
+function cargarVcontratos(root,loc, param)
+{
+	var cont;
+	contVc = document.getElementById(loc);
+	ajaxVc=nuevoAjax();
+	ajaxVc.open("GET", root + "?"+param ,true);
+	ajaxVc.onreadystatechange=function() {
+		if (ajaxVc.readyState==4) {
+  			contVc.innerHTML = ajaxVc.responseText
+		}
+	}
+	ajaxVc.send(null)
+}
+
+function cargarBduenio(root,loc, param)
+{
+	var cont;
+	contbusd = document.getElementById(loc);
+	ajaxbusd=nuevoAjax();
+	ajaxbusd.open("GET", root + "?"+param ,true);
+	ajaxbusd.onreadystatechange=function() {
+		if (ajaxbusd.readyState==4) {
+  			contbusd.innerHTML = ajaxbusd.responseText
+		}
+	}
+	ajaxbusd.send(null)
+}
+
+
+function iniciar()
+{
+
+	mes=0;
+
+	cargarBduenio('scripts/marcodueniob.php', 'dueniobus', '');
+	cargarCalendario("scripts/calendario.php", "calendario", "num=0");
+	cargarSeccion('scripts/acceso.php', 'menug', 'usuario=0&pwd=0');
+	cargarVcontratos('scripts/marcovcontratos.php','eventos', '');
+	cargarBusqueda('scripts/marcobusqueda.php', 'directorio', 'usuario=0&pwd=0');
+	cargarVencimienetos('scripts/marcovencimientos.php','vencimientos', 'periodo=0');
+	//cargaTareas('scripts/tareas/listatareap.php','tareasdiv', '');
+	//cargaimagen('scripts/general/imageninicial.php','contenido', '');
+	//cargarBduenio('scripts/marcodueniob.php', 'dueniobus', '');
+
+	//cargarSeccion("scripts/calendario.php", "calendario", "num=0");
+	//setTimeout("cargarSeccion('scripts/acceso.php', 'menug', 'usuario=0&pwd=0')", 700);
+	//setTimeout("cargarSeccion('scripts/marcobusqueda.php', 'directorio', 'usuario=0&pwd=0')", 1400);
+	//cargaTareas('scripts/asuntos/listatareap.php','tareasdiv', '');
+}
+
+
+function llamacierre()
+{
+
+
+	ejecutaierre('scripts/inmuebles/cierreauto.php?ver=1','infocierre');
+
+}
+
+function carruceltareas()
+{
+	if(pausacarrusel=='')
+	{
+	id=document.getElementById('idtareac').value;
+	cargaTareas('scripts/tareas/listatareap.php','tareasdiv', 'id=' + id + '&movimiento=*&pausa=' + pausacarrusel);
+	}
+
+
+}
+
+
+function ejecutaierre(root,loc){
+var cont1;
+cont1 = document.getElementById(loc);
+ajax=nuevoAjax();
+ajax.open("GET", root, true);
+ajax.onreadystatechange=function() {
+if (ajax.readyState==4) {
+   cont1.innerHTML = ajax.responseText
+}
+}
+ajax.send(null);
+}
+
+function actualizap()
+{
+	//alert('poractualizar');
+	setTimeout('window.location.reload()',500);
+}
+
+
+
+function verifica(id)
+{
+	//alert(id);
+	//document.getElementById(id).cick();
+	document.getElementById('total0').click();
+	//alert(document.getElementById('total0').value);
+
+}
+
+
+function calculaedoduenio (total, listasuma, listav)
+{
+	var suma = 0;
+	//alert(listav + ' - ' + listasuma);
+	c = listav.split("*");
+	
+	okl=true;
+	okn='';
+
+	for(var i=0; i < c.length  ; i++)
+	{
+		//alert(c[i]);
+		b = c[i].split("|");
+		okl=true;
+		okn='';		
+		//alert(b);
+		
+		
+		for(var j=0; j < (b.length - 1) ; j++)
+		{
+			
+			c0 = b[j].split("_");
+			//alert(c0);
+			nc ="c_" + c0[1];
+			//alert(nc);
+			if(okl == false && document.getElementById(nc).checked == true)
+			{
+		 		alert ('No puede quitar elementos anteriores para el reporte');
+		 		document.getElementById(okn).checked = true;
+		 		break;
+		
+			}			
+			okl =document.getElementById(nc).checked;
+			okn = nc;
+		
+		}
+		
+
+
+		
+/*
+		c0 = c[i].split("_");
+		nc ="c_" + c0[1];
+		//alert (nc);
+		//alert (document.getElementById(nc).checked)
+		if(okl == false && document.getElementById(nc).checked == true)
+		{
+		 	alert ('No puede quitar elementos anteriores para el reporte');
+		 	document.getElementById(okn).checked = true;
+		
+		}
+		okl =document.getElementById(nc).checked;
+		okn = nc;
+		*/
+	}
+
+	c = listasuma.split("|");
+	for(var i=0; i < (c.length - 1) ; i++)
+	{
+		n = document.getElementById(c[i]).value;
+		//alert(n);
+		
+		c0 = c[i].split("_");
+		nc ="c_" + c0[1];
+		//alert (nc);
+		//alert (document.getElementById(nc).checked)
+	
+		if(document.getElementById(nc).checked == true) {suma += 1 * document.getElementById(c[i]).value;}
+	} 
+	document.getElementById(total).value = suma;
+	//alert ( suma);
+
+}
+
+
+
+
+
+
+
+//ejecutaierre('scripts/cierreauto.php','infocierre');
+</script>
+</head>
+<body style="margin-top:0; margin-bottom:0; margin-left:0; margin-right:0" id='bdy' onLoad ="iniciar();lecturarss();setInterval('carruceltareas()',20000);">
+
+<table height="100%" width="100%" border="0">
+<tr height="100%">
+<td valign = "Top">
+
+<!-- Cabecera -->
+<table border="0" width="100%" >
+<tr>
+<!--
+	<td width="1"><img src="imagenes/logo.jpg" ></td> -->
+	<td width="1">
+		<div id="dueniobus" style="width:400px;">
+		</div>
+	</td>
+	<td >&nbsp;
+	</td >
+	<td >
+		<div id="tareasdiv" style="width:400px;">
+		</div>
+	</td>
+</tr>
+</table>
+
+<!-- Barra separadora del contenido y la cabecera -->
+<table border="0" width="100%">
+<tr>
+	<td class="MenuP" align="center"><a href="http://mail.padilla-bujalil.com.mx" target="_blank" CLASS="MenuP">CORREO</a><div id="infocierre"></div></td>
+</tr>
+</table>
+
+
+<table border="0" width="100%" height="100%" >
+<tr valign = "Top" height="100%" >
+<!-- Menu de la pagina -->
+	<td width="150" class="MenuP">
+<!---
+		<table class="FondoMenu" width="100%">
+		<tr>
+			<td class="MenuP" OnMouseOver="this.className='SobreCampom'" OnMouseOut="this.className='MenuP'"   onClick="cambiahtml('contenido',1);">Inicio</td>
+		</tr>
+		<tr>
+			<td class="MenuP" OnMouseOver="this.className='SobreCampom'" OnMouseOut="this.className='MenuP'"   onClick="cambiahtml('contenido',2);">?Quienes Somos?</td>
+		</tr>
+		<tr>
+			<td class="MenuP" OnMouseOver="this.className='SobreCampom'" OnMouseOut="this.className='MenuP'"   onClick="cambiahtml('contenido',3);">Misi?n y Visi?n</td>
+		</tr>
+		<tr>
+			<td class="MenuP" OnMouseOver="this.className='SobreCampom'" OnMouseOut="this.className='MenuP'"   onClick="cambiahtml('contenido',4);">Servicios</td>
+		</tr>
+		<tr>
+			<td class="MenuP" OnMouseOver="this.className='SobreCampoM'" OnMouseOut="this.className='MenuP'"   onClick="cambiahtml('contenido',5);">Contactanos</td>
+		</tr>
+
+		</table>
+-->
+
+		<div id="menug"></div>
+		<a href="http://www.padilla-bujalil.com.mx" style="color:#FFFFFF" >Inmobiliaria</a>
+		<p>
+
+		</p>
+
+
+
+	</td>
+
+<!-- El contenido de la pagina Web  -->
+	<td align="center" valign="center">
+		<table height="100%" >
+		<tr>
+			<td valign = "Top">
+			<div id="contenido" >
+
+<!-- 								<img src="imagenes/anuncio.jpg" >-->
+<!--                                	<img src="imagenes/mayo_gde.jpg" >		-->
+<!--
+                                <object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=9,0,28,0" width="600" height="418">
+                                    <param name="movie" value="peliculas/caratulastaff.swf" />
+                                    <param name="quality" value="high" />
+                                    <embed src="peliculas/caratulastaff.swf" quality="high" pluginspage="http://www.adobe.com/shockwave/download/download.cgi?P1_Prod_Version=ShockwaveFlash" type="application/x-shockwave-flash" width="600" height="418"></embed>
+                                </object>
+-->
+
+                        </div>
+			</td>
+		</tr>
+		</table>
+	</td>
+
+<!-- El lado derecho de la pagina con los accesos rapidos a opciones -->
+	<td align= "center" valign="top" width = "1" class="MenuP">
+
+		<div id ="calendario"></div>
+		<div id ="eventos"></div>
+		<div id ="directorio"></div>
+		<div id ="vencimientos"></div>
+	</td>
+
+</tr>
+</table>
+
+
+
+</td>
+</tr>
+<!--
+<tr>
+<td>
+
+	<table border="0" width="100%">
+	<tr align="center">
+		<td class="MenuP">
+		  	<div  class="RSSV" id="RSS1">
+			    <div class="Scroller-Container" id="RSS11">
+  			    </div>
+			</div>
+		</td>
+	</tr>
+	</table>
+
+
+
+</td>
+</tr>-->
+</table>
+
+</body>
+</html>

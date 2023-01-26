@@ -1,0 +1,53 @@
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="estilos/estilos.css">
+<script type=text/javascript src="scripts/mijs.js"></script>
+<script language="javascript" src="scripts/ajax.js" type="text/javascript"></script>
+<script languaje="javascript" type="text/javascript">
+function cargarSeccion(root,loc, param)
+{
+	var cont;
+	cont = document.getElementById(loc);
+	ajax=nuevoAjax();
+	ajax.open("GET", root + "?"+param ,true);
+	ajax.onreadystatechange=function() {
+		if (ajax.readyState==4) {
+  			cont.innerHTML = ajax.responseText
+		}
+	}
+	ajax.send(null)
+}
+</script>
+<title>Padilla &amp; Bujalil, SC</title>
+</head>
+<body>
+<center>
+	<table  border="0" cellpadding="0" cellspacing="0">
+	<tr >
+		<td align="center" valign="middle">
+			<img src="imagenes/logo.png" alt="LogoEC"  />
+	      	</td>
+	</tr>
+    	<tr>
+    		<td align="center">
+			<form>
+				Escriba su nombre como aparece en su contrato<br>
+				<input type="text" name="nombre" value="">
+				<input type="button" value="Verificar" onClick="cargarSeccion('scripts/reportemant/verificai.php','inmueble','nombre=' + nombre.value );"><br>
+				(nombre y apellido materno)
+				<div id="inmueble">
+
+				</div>
+
+
+			</form>
+
+
+    		</td>
+    	</tr>
+    	</table>
+
+
+</center>
+</body>
+</html>
